@@ -112,6 +112,13 @@ enum JBSourceMode {
     }
 }
 
+- (void)reset
+{
+    [self stopAnimation];
+    [self.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    [_imagesArray removeAllObjects];
+}
+
 - (void)addImage:(UIImage *)image
 {
     [_imagesArray addObject:image];

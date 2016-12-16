@@ -92,6 +92,11 @@ typedef enum {
 - (void)stopAnimation;
 
 /**
+ Stop the current animation and reset all images.
+ */
+- (void)reset;
+
+/**
  Add an image to the current animation.
  @param image A UIImage to add to the animation playback.
  @since 0.3
