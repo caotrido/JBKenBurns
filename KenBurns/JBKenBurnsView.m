@@ -152,8 +152,14 @@ enum JBSourceMode {
 - (void)nextImage
 {
     _currentImageIndex++;
-
+    
     UIImage *image = self.currentImage;
+    
+    if (image == nil) {
+        [self didFinishNextImage];
+        return;
+    }
+    
     UIImageView *imageView = nil;
     
     float originX       = -1;
@@ -296,9 +302,14 @@ enum JBSourceMode {
          imageView.transform = finishTransform;
          
      } completion:^(BOOL finished) {}];
+    
+    [self didFinishNextImage];
+}
 
+- (void)didFinishNextImage
+{
     [self notifyDelegate];
-
+    
     // Restart or stop
     if (_currentImageIndex == _imagesArray.count - 1) {
         if (_shouldLoop) { _currentImageIndex = -1; }
@@ -308,8 +319,8 @@ enum JBSourceMode {
 
 - (float)getResizeRatioFromImage:(UIImage *)image width:(float)frameWidth height:(float)frameHeight
 {
-    float widthRatio  = frameWidth / image.size.width;
-    float heightRatio = frameHeight / image.size.height;
+    float widthRatio  = frameWidth / MAX(image.size.width, 1);
+    float heightRatio = frameHeight / MAX(image.size.height, 1);
     
     return widthRatio > heightRatio ? widthRatio : heightRatio;
 }
